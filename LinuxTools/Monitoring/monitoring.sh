@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-VERSION="0.1.0"
+VERSION="1.0.0"
 
 #Tmux window name
 s_name="monitoring"
