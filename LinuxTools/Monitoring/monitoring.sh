@@ -16,7 +16,7 @@ tmux split-window -v -t ${s_name}
 tmux split-window -h -t ${s_name}:0.1
 
 tmux send-keys -t ${s_name}:0.0 'htop' C-m
-tmux send-keys -t ${s_name}:0.1 'watch -t -c "echo 'USERS:' && users && echo 'JOURNALCTL:' && journalctl --no-pager -n 10"' C-m
+tmux send-keys -t ${s_name}:0.1 'watch -t -c "echo 'USERS:' && users && echo 'JOURNALCTL:' && journalctl -p err -b --no-pager -n 10"' C-m
 tmux send-keys -t ${s_name}:0.2 'dstat' C-m
 
 
