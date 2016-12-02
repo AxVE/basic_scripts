@@ -1,0 +1,59 @@
+conky.config = {
+	--Window type
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+	background = false,
+	double_buffer = true,
+
+	--Window position	
+	alignment = "top_left",
+	gap_x = 2350,
+	gap_y = 10,
+
+	--window size
+	minimum_width = 400,
+	maximum_width = 400,
+
+	--Window color
+	own_window_colour = '202020',
+	border_width = 2,
+	default_color = 'black',
+	draw_borders = true,
+
+	--Text police
+	use_xft = true,
+	font = 'Droid Sans:size=15',
+
+	--Color
+	color0 = "ffa000", --title color
+	color1 = "b0b080", --textcolor
+	color2 = "d0d040", --parts color
+
+}
+
+
+conky.text = [[
+${color0}Server ${hr 2}${execi 300 wget -qO /dev/shm/infos-cloudjumper.cache.txt "http://192.168.0.25/Pages/system.php" && mv /dev/shm/infos-cloudjumper.cache.txt /dev/shm/infos-cloudjumper && date +"%H %M %S" > /dev/shm/lastupdate-CJ}${color1}
+${exec cat /dev/shm/infos-cloudjumper | grep system_hostname | awk -F "=" '{print $2}'}\
+ ${exec cat /dev/shm/infos-cloudjumper | grep system_os | awk -F "=" '{print $2}'}
+#Last update: ${exec tools/dateDiff.sh $(cat /dev/shm/lastupdate-CJ)}
+${color2}CPU ${hr 2}${color1}
+Temp: ${exec cat /dev/shm/infos-cloudjumper | grep cpu_temp | awk -F "=" '{print $2}'} °C
+Load: ${exec cat /dev/shm/infos-cloudjumper | grep cpu_load_1min | awk -F "=" '{print $2}'}\
+	${exec cat /dev/shm/infos-cloudjumper | grep cpu_load_5min | awk -F "=" '{print $2}'}\
+	${exec cat /dev/shm/infos-cloudjumper | grep cpu_load_15min | awk -F "=" '{print $2}'} 
+Freq: ${exec cat /dev/shm/infos-cloudjumper | grep cpu_curFreq | awk -F "=" '{print $2}'}\
+ ${exec cat /dev/shm/infos-cloudjumper | grep cpu_unitFreq | awk -F "=" '{print $2}'}\
+ [${exec cat /dev/shm/infos-cloudjumper | grep cpu_minFreq | awk -F "=" '{print int($2)}'}\
+ ; ${exec cat /dev/shm/infos-cloudjumper | grep cpu_maxFreq | awk -F "=" '{print int($2)}'}]
+${color2}RAM ${hr 2}${color1}
+${execbar echo $(cat /dev/shm/infos-cloudjumper | grep mem_usedpercent | awk -F "=" '{print $2}')}
+${color2}NETWORK ${hr 2}${color1}
+IN: ${exec cat /dev/shm/infos-cloudjumper | grep network_bytesInSpeed_MB/s | awk -F "=" '{print $2}'} MB/s
+OUT: ${exec cat /dev/shm/infos-cloudjumper | grep network_bytesOutSpeed_MB/s | awk -F "=" '{print $2}'} MB/s
+${color2}SERVICES ${hr 2}${color1}
+http: ${exec cat /dev/shm/infos-cloudjumper | grep service_http | awk -F "=" '{print $2}'}
+ssh: ${exec cat /dev/shm/infos-cloudjumper | grep service_ssh | awk -F "=" '{print $2}'}
+ts3: ${exec cat /dev/shm/infos-cloudjumper | grep service_teamspeak3 | awk -F "=" '{print $2}'}
+]]

@@ -1,0 +1,37 @@
+conky.config = {
+	--Window type
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+	background = false,
+	double_buffer = true,
+
+	--Window position	
+	alignment = "top_left",
+	gap_x = 3190,
+	gap_y = 850,
+
+	--window size
+	minimum_width = 400,
+	maximum_width = 400,
+
+	--Window color
+	own_window_colour = '202020',
+	border_width = 2,
+	default_color = 'black',
+	draw_borders = true,
+
+	--Text police
+	use_xft = true,
+	font = 'Droid Sans:size=15',
+
+	--Color
+	color0 = "ffa000", --title color
+	color1 = "b0b080", --textcolor
+	color2 = "d0d040", --parts color
+
+}
+
+conky.text = [[
+${execpi 300 ~/.conky/tools/weather.pl}
+]]

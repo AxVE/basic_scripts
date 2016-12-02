@@ -1,0 +1,86 @@
+conky.config = {
+	--Window type
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+	own_window_argb_visual = true,
+	background = false,
+	double_buffer = true,
+
+	--Window position	
+	alignment = "top_left",
+	gap_x = 1930,
+	gap_y = 10,
+
+	--window size
+	minimum_width = 400,
+	maximum_width = 400,
+
+	--Window color
+	own_window_colour = '202020',
+	border_width = 2,
+	default_color = 'black',
+	draw_borders = true,
+
+	--Text police
+	use_xft = true,
+	font = 'Droid Sans:size=15',
+
+	--Color
+	color0 = "ffa000", --title color
+	color1 = "b0b080", --textcolor
+	color2 = "d0d040", --parts color
+
+}
+
+conky.text = [[
+${color0}System ${hr 2}${color1}
+$nodename $sysname $kernel
+#
+#
+#
+${color2}CPU ${hr 2}${color1}
+TEMP:         ${exec echo $(($(cat /sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon0/temp1_input)/1000))}°C
+${freq}MHz   Load: ${loadavg}   Uptime: ${uptime}
+${cpugraph 000000 FFBB00}
+NAME			PID	CPU%	MEM%
+${top name 1}		${top pid 1}	${top cpu 1}	${top mem 1}
+${top name 2}		${top pid 2}	${top cpu 2}	${top mem 2}
+${top name 3}		${top pid 3}	${top cpu 3}	${top mem 3}
+${top name 4}		${top pid 4}	${top cpu 4}	${top mem 4}
+#
+#
+#
+${color2}GPU (radeon R9 Fury Nano) ${hr 2}${color1}
+TEMP:         ${exec echo $(($(cat /sys/bus/pci/devices/0000:01:00.0/hwmon/hwmon*/temp1_input)/1000))}°C
+Ventirads:   ${exec echo $(($(cat /sys/bus/pci/devices/0000:01:00.0/hwmon/hwmon*/pwm1)*100/$(cat /sys/bus/pci/devices/0000:01:00.0/hwmon/hwmon*/pwm1_max)))}% (Nb: ${exec cat /sys/bus/pci/devices/0000:01:00.0/hwmon/hwmon*/pwm1_enable})
+Driver:         ${exec echo $(cat /sys/bus/pci/devices/0000:01:00.0/hwmon/hwmon*/name)}
+#
+${color2}GPU (radeon HD7770) ${hr 2}${color1}
+TEMP:         ${exec echo $(($(cat /sys/bus/pci/devices/0000:02:00.0/hwmon/hwmon*/temp1_input)/1000))}°C
+Ventirads:   ${exec echo $(($(cat /sys/bus/pci/devices/0000:02:00.0/hwmon/hwmon*/pwm1)*100/$(cat /sys/bus/pci/devices/0000:02:00.0/hwmon/hwmon*/pwm1_max)))}% (Nb: ${exec cat /sys/bus/pci/devices/0000:02:00.0/hwmon/hwmon*/pwm1_enable})
+Driver:         ${exec echo $(cat /sys/bus/pci/devices/0000:02:00.0/hwmon/hwmon*/name)}
+#
+#
+#
+${color2}MEMORY / DISK ${hr 2}${color1}
+RAM:   $memperc%   ${membar 6}${color1}
+Swap:  $swapperc%   ${swapbar 6}${color1}
+
+Root:  ${fs_used_perc /}%   ${fs_bar 6 /}${color1}
+Home:  ${fs_used_perc /home}%   ${fs_bar 6 /home}${color1}
+Multimedia: ${fs_used_perc /Data/Multimedia}%	${fs_bar 6 /Data/Multimedia}${color1}
+
+${color1}Disk I/O:${diskio}
+${diskiograph 000000 FFBB00}
+#
+#
+#
+${color2}BANDWIDTH (enp3s0) ${hr 2}${color1}
+Ip-box:    ${addr enp3s0}
+Ip-public: ${texeci 3600 wget http://checkip.dyndns.org -O - -o /dev/null | cut -d : -f 2 | cut -d \< -f 1}
+Down:      ${totaldown enp3s0}
+${downspeedgraph enp3s0 22,300 5e7b7b d8deeb} ${alignr}${downspeed enp3s0}
+Up:        ${totalup enp3s0}
+${upspeedgraph enp3s0 22,300 99c8e8 618094} ${alignr}${upspeed enp3s0}
+]]

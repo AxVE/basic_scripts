@@ -1,0 +1,55 @@
+conky.config = {
+	--Window type
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+	background = false,
+	double_buffer = true,
+
+	--Window position	
+	alignment = "top_left",
+	gap_x = 2350,
+	gap_y = 400,
+
+	--window size
+	minimum_width = 400,
+	maximum_width = 400,
+
+	--Window color
+	own_window_colour = '202020',
+	border_width = 2,
+	default_color = 'black',
+	draw_borders = true,
+
+	--Text police
+	use_xft = true,
+	font = 'Droid Sans:size=15',
+
+	--Color
+	color0 = "ffa000", --title color
+	color1 = "b0b080", --textcolor
+	color2 = "d0d040", --parts color
+
+}
+
+conky.text = [[
+${color0}Archlinux updates ${hr 2}
+${color2}Official ${hr 2}${color1}
+${rss https://www.archlinux.org/feeds/packages/ 10 item_title 0}
+${rss https://www.archlinux.org/feeds/packages/ 10 item_title 1}
+${rss https://www.archlinux.org/feeds/packages/ 10 item_title 2}
+${rss https://www.archlinux.org/feeds/packages/ 10 item_title 3}
+${rss https://www.archlinux.org/feeds/packages/ 10 item_title 4}
+${color2}Archlinux-fr ${hr 2}${color1}
+${rss https://afur.archlinux.fr/feed.php 10 item_title 0}
+${rss https://afur.archlinux.fr/feed.php 10 item_title 1}
+${rss https://afur.archlinux.fr/feed.php 10 item_title 2}
+${rss https://afur.archlinux.fr/feed.php 10 item_title 3}
+${rss https://afur.archlinux.fr/feed.php 10 item_title 4}
+${color2}Aur ${hr 2}${color1}
+${rss https://aur.archlinux.org/rss/ 10 item_title 0}
+${rss https://aur.archlinux.org/rss/ 10 item_title 1}
+${rss https://aur.archlinux.org/rss/ 10 item_title 2}
+${rss https://aur.archlinux.org/rss/ 10 item_title 3}
+${rss https://aur.archlinux.org/rss/ 10 item_title 4}
+]]

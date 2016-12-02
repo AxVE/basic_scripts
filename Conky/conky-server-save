@@ -1,0 +1,43 @@
+conky.config = {
+	--Window type
+	own_window = true,
+	own_window_type = 'normal',
+	own_window_hints = "undecorated,below,sticky,skip_taskbar,skip_pager",
+	background = false,
+	double_buffer = true,
+
+	--Window position	
+	alignment = "top_right",
+	gap_x = 630,
+	gap_y = 10,
+
+	--window size
+	minimum_width = 400,
+	maximum_width = 400,
+
+	--Window color
+	own_window_colour = '202020',
+	border_width = 2,
+	default_color = 'black',
+	draw_borders = true,
+
+	--Text police
+	use_xft = true,
+	font = 'Droid Sans:size=15',
+
+	--Color
+	color0 = "ffa000", --title color
+	color1 = "b0b080", --textcolor
+	color2 = "d0d040", --parts color
+
+}
+
+conky.text = [[
+${color0}Server ${hr 2}${execi 300 wget -qO /dev/shm/infos-cloudjumper.cache.txt "http://taniere-des-zanimos.net/infos_serv.php?id=kmiEF76Xx&format=txt" && mv /dev/shm/infos-cloudjumper.cache.txt /dev/shm/infos-cloudjumper && date +"%H %M %S" > /dev/shm/lastupdate-CJ}
+#Last update: ${exec tools/dateDiff.sh $(cat /dev/shm/lastupdate-CJ)}
+${color2}CPU ${hr 2}${color1}
+Temp: ${exec cat /dev/shm/infos-cloudjumper | grep cpu_Temp | awk '{print $2}'} °C
+Load: ${exec cat /dev/shm/infos-cloudjumper | grep cpu_load | awk -F "\t" '{print $2}'}
+${color2}RAM ${hr 2}${color1}
+${execbar a=$(cat /dev/shm/infos-cloudjumper | grep mem_available | awk '{print $2}') && t=$(cat /dev/shm/infos-cloudjumper | grep mem_total | awk '{print $2}') && echo $((($t-$a)*100/$t))}
+]]
