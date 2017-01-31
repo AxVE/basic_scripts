@@ -1,0 +1,3 @@
+#!/bin/bash
+gs -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="/tmp/reducePdf_tmp.pdf" "$PWD/$1"
+mv "/tmp/reducePdf_tmp.pdf" "$PWD/$2"
