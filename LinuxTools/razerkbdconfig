@@ -1,0 +1,27 @@
+#! /usr/bin/python3
+
+# Author: Drahull (Axel Verdier)
+# This script is used to change the razer blackwidow chroma static color
+# It used the terrycain's drivers
+# Link of the driver: https://terrycain.github.io/razer-drivers/
+
+# === RGB colors values ===
+# Be aware RGB (hexadecimal) asked and display can be differents as the system
+# used in keyboard is not perfect for this, you'll have to adapt
+# your asked color to really get the one you want
+color_R = 'FF'
+color_G = '30'
+color_B = '00'
+
+colorBin = "\\x"+color_R+"\\x"+color_G+"\\x"+color_B
+
+# === Get path of the keyboard driver ===
+p = "/sys/bus/hid/drivers/razerkbd/0003:1532:0203.0005/"
+
+
+# === Send value ===
+f = p + "matrix_effect_static"
+cmd = "echo -n -e \""+colorBin+"\" > "+f
+
+import subprocess
+subprocess.run(cmd, shell=True)
