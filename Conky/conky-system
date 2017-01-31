@@ -40,7 +40,7 @@ $nodename $sysname $kernel
 #
 #
 ${color2}CPU ${hr 2}${color1}
-TEMP:         ${exec echo $(($(cat /sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon0/temp1_input)/1000))}°C
+TEMP:         ${exec echo $(($(cat /sys/bus/pci/drivers/k10temp/0000:00:18.3/hwmon/hwmon*/temp1_input)/1000))}°C
 ${freq}MHz   Load: ${loadavg}   Uptime: ${uptime}
 ${cpugraph 000000 FFBB00}
 NAME			PID	CPU%	MEM%

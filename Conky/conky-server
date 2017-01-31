@@ -34,7 +34,7 @@ conky.config = {
 
 
 conky.text = [[
-${color0}Server ${hr 2}${execi 300 wget -qO /dev/shm/infos-cloudjumper.cache.txt "http://192.168.0.25/Pages/system.php" && mv /dev/shm/infos-cloudjumper.cache.txt /dev/shm/infos-cloudjumper && date +"%H %M %S" > /dev/shm/lastupdate-CJ}${color1}
+${color0}Server ${hr 2}${execi 300 wget -qO /dev/shm/infos-cloudjumper.cache.txt "http://192.168.0.25/Pages/system.php?pwd=2qpps9FcbXrDed68" && mv /dev/shm/infos-cloudjumper.cache.txt /dev/shm/infos-cloudjumper && date +"%H %M %S" > /dev/shm/lastupdate-CJ}${color1}
 ${exec cat /dev/shm/infos-cloudjumper | grep system_hostname | awk -F "=" '{print $2}'}\
  ${exec cat /dev/shm/infos-cloudjumper | grep system_os | awk -F "=" '{print $2}'}
 #Last update: ${exec tools/dateDiff.sh $(cat /dev/shm/lastupdate-CJ)}
