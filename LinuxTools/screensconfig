@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+
+# === Old way : display on both shared screens but go some refresh-cuts ===
+##Active second gpu
+#xrandr --setprovideroutputsource 1 0
+##Get screens id
+#screen1="$(xrandr | grep -E 'DP-[0-9] connected' | cut -d ' ' -f 1)"
+#screen2="$(xrandr | grep 'DisplayPort' | cut -d ' ' -f 1)"
+#
+##Active screen
+#$(xrandr --output "${screen2}" --auto  --right-of "${screen1}")
+
+# === New way (todo : check ids are always the same) ===
+# == Get providers id with "xrandr --listproviders" ==
+# = Example: =
+# $ xrandr --listproviders
+# Providers: number : 2
+# Provider 0: id: 0xa7 cap: 0xf, Source Output, Sink Output, Source Offload, Sink Offload crtcs: 6 outputs: 4 associated providers: 1 name:FIJI @ pci:0000:01:00.0
+# Provider 1: id: 0x59 cap: 0xf, Source Output, Sink Output, Source Offload, Sink Offload crtcs: 6 outputs: 4 associated providers: 1 name:VERDE @ pci:0000:02:00.0
+
+# == Activate the second gpu's outputs and redirect it to the first gpu with the providers (gpus) id ==
+# == Command is: "xrandr --setprovideroutputsource provider source" ==
+# = Example: =
+# xrandr --setprovideroutputsource 0x59 0xa7
+xrandr --setprovideroutputsource 0x59 0xa7
+
+# == Get the monitors with "xrandr -q" ==
+
+# == Set the monitors ==
+xrandr --output DisplayPort-0 --auto --output DisplayPort-2-3 --auto --right-of DisplayPort-0
+
