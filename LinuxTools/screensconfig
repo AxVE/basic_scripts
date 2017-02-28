@@ -1,15 +1,5 @@
 #!/usr/bin/bash
 
-# === Old way : display on both shared screens but go some refresh-cuts ===
-##Active second gpu
-#xrandr --setprovideroutputsource 1 0
-##Get screens id
-#screen1="$(xrandr | grep -E 'DP-[0-9] connected' | cut -d ' ' -f 1)"
-#screen2="$(xrandr | grep 'DisplayPort' | cut -d ' ' -f 1)"
-#
-##Active screen
-#$(xrandr --output "${screen2}" --auto  --right-of "${screen1}")
-
 # === New way (todo : check ids are always the same) ===
 # == Get providers id with "xrandr --listproviders" ==
 # = Example: =
@@ -25,7 +15,11 @@
 xrandr --setprovideroutputsource 0x59 0xa7
 
 # == Get the monitors with "xrandr -q" ==
+# = Get first screen =
+screen1="$(xrandr | grep ' connected' | grep 'primary' | cut -d ' ' -f 1)"
+# = Get the other screen (only one for the moment) =
+screen2="$(xrandr | grep ' connected' | grep -v 'primary' | cut -d ' ' -f 1)"
 
 # == Set the monitors ==
-xrandr --output DisplayPort-0 --auto --output DisplayPort-2-3 --auto --right-of DisplayPort-0
+xrandr --output ${screen1} --auto --output ${screen2} --auto --right-of ${screen1}
 
