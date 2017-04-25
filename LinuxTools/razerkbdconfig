@@ -5,6 +5,8 @@
 # It used the terrycain's drivers
 # Link of the driver: https://terrycain.github.io/razer-drivers/
 
+import subprocess
+
 # === RGB colors values ===
 # Be aware RGB (hexadecimal) asked and display can be differents as the system
 # used in keyboard is not perfect for this, you'll have to adapt
@@ -16,12 +18,17 @@ color_B = '00'
 colorBin = "\\x"+color_R+"\\x"+color_G+"\\x"+color_B
 
 # === Get path of the keyboard driver ===
-p = "/sys/bus/hid/drivers/razerkbd/0003:1532:0203.0005/"
-
+# Note: the correct directory of *:*:*.* (bus ids) is
+# generally the last one inside /sys/bus/hid/drivers/razerkbd/
+cmd = "ls -1d /sys/bus/hid/drivers/razerkbd/*:*:*.*"
+proc = subprocess.run(cmd, shell=True,
+        universal_newlines=True, #Force standard string and not bytes
+        stdout=subprocess.PIPE)
+razerPaths = proc.stdout.split()
+p = razerPaths[-1]+"/"
 
 # === Send value ===
 f = p + "matrix_effect_static"
 cmd = "echo -n -e \""+colorBin+"\" > "+f
 
-import subprocess
 subprocess.run(cmd, shell=True)
