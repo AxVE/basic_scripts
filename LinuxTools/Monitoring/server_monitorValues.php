@@ -2,6 +2,32 @@
 	//Author:drahull(Axel Verdier)
 	//Email:axel.l.verdier@free.fr
 
+	//Secure, list of know ip (['ip']='nameid'
+	$trusted_ip = array(
+		'127.0.0.1' => 'localhost',
+	);
+
+	//Get the ip of the client and check he is allowed
+	$client_ip=$_SERVER['REMOTE_ADDR'];
+	$client_id="unknown";
+	
+	//Secure, check this client-ip is trusted
+	if(array_key_exists($client_ip, $trusted_ip)){
+		$client_id = $trusted_ip[$client_ip];
+	}
+	else{
+		//intranet ?
+		function startsWith($haystack, $needle){
+			$length = strlen($needle);
+			return(substr($haystack, 0, $length) === $needle);
+		}
+		if(startsWith($client_ip, "192.168.") || startsWith($client_ip, "10.")){$client_id="intranet";}
+		else{
+			echo("You don't have access to this page.");
+			exit();
+		}
+	}
+
 	//Prepare getting and printing values
 	$nl="\n"; //Return line ("\n" to have a txt file, "<br>" to have a html)
 		//If the user want a html output
@@ -16,9 +42,11 @@
 	
 	//=== Measures infos ===
 	echo "[INFOS]$nl";
-	echo "info_timePrevious=$oldTime$nl";
-	echo "info_timeActual=$checkTime$nl";
-	echo "info_timeGap=$secDiff$nl";
+	echo "info_client_ip=$client_ip$nl";
+	echo "info_client_id=$client_id$nl";
+	echo "info_server_timePrevious=$oldTime$nl";
+	echo "info_server_timeActual=$checkTime$nl";
+	echo "info_server_timeGap=$secDiff$nl";
 
 	//=== System ===
 	echo "[SYSTEM]$nl";
@@ -52,6 +80,7 @@
 			break; //End read of file
 		}
 	}
+	fclose($fh);
 	$tmp_cpu_freqInfos=shell_exec('LANG=en lscpu | grep MHz');
 	$cpu_freqInfos=explode("\n",$tmp_cpu_freqInfos);
 	$cpu_unitFreq="MHz";
@@ -88,6 +117,10 @@
 	echo "cpu_loadpercent_1min=$cpu_loadpercent[0]$nl";
 	echo "cpu_loadpercent_5min=$cpu_loadpercent[1]$nl";
 	echo "cpu_loadpercent_15min=$cpu_loadpercent[2]$nl";
+
+	//Print cpu cooling info
+	$cpu_temp=intval(shell_exec("cat /sys/class/thermal/thermal_zone0/temp"))/1000;
+	echo "cpu_temp=$cpu_temp$nl";
 
 	//=== RAM ===
 	echo "[RAM]$nl";
@@ -131,6 +164,16 @@
 
 	//=== Disks ===
 	echo "[DISKS]$nl";
+		//get from the partition 'part' (/dev/sda1) the information field from 'df' command (pcent || target || ///)
+	function partInfo($part, $info){
+		return shell_exec("df $part --output=$info | sed -e 1d");
+	}
+	foreach(array("/dev/sda1","/dev/sda2","/dev/sda3","/dev/sda4") as &$partition){
+		$part_pcent = partInfo($partition, "pcent");
+		$part_target = partInfo($partition, "target");
+		echo "disk_${partition}_pcent=$part_pcent$nl";
+		echo "disk_${partition}_target=$part_target$nl";
+	}
 
 	//=== Network ===
 	echo "[NETWORK]$nl";
@@ -163,9 +206,11 @@
 	$service_http=trim(shell_exec('systemctl show httpd --property=SubState --value'));
 	$service_ssh=trim(shell_exec('systemctl show sshd --property=SubState --value'));
 	$service_ts3=trim(shell_exec('systemctl show teamspeak3-server --property=SubState --value'));
+	$version_git=shell_exec("git --version");
 
 	//print services data
 	echo "service_http=$service_http$nl";
 	echo "service_ssh=$service_ssh$nl";
 	echo "service_teamspeak3=$service_ts3$nl";
+	echo "service_git_version=$version_git$nl";
 ?>
